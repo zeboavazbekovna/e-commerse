@@ -4,7 +4,7 @@ import { ShoppingBag } from "lucide-react";
 import logo from "../assets/icons/logo.svg";
 import { useCart } from "../contexts/CartContext";
 
-const Header = () => {
+const Header = ({handleSidebarOpen}) => {
   const [isActive, setIsActive] = useState(false);
 
   const { cart } = useCart();
@@ -35,7 +35,7 @@ const Header = () => {
         </div>
 
         <button className='relative'>
-          <ShoppingBag className='w-7 h-7' />
+          <ShoppingBag className='w-7 h-7' onClick={handleSidebarOpen} />
           <span className='absolute -bottom-1 -right-1 text-xs bg-red-500 text-white rounded-full min-w-4'>
             {cart.length}
           </span>

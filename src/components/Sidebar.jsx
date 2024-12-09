@@ -1,20 +1,36 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Trash2 } from "lucide-react";
+import { useEffect } from "react";
 
 // import CartItem from "../components/CartItem";
 // import { SidebarContext } from "../contexts/SidebarContext";
 // import { CartContext } from "../contexts/CartContext";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, handleClose }) => {
   // const { isOpen, handleClose } = useContext(SidebarContext);
   // const { cart, clearCart, itemAmount, total } = useContext(CartContext);
-  let isOpen = true
+  // let isOpen = true
+
+  useEffect(() => {
+    function watchClick(e) {
+      if (isOpen && !e.target.closest(".sidebar")) {
+        // handleClose();
+        console.log("CLOSE");
+      }
+    }
+
+    window.addEventListener("click", watchClick);
+
+    return () => {
+      window.removeEventListener("click", watchClick);
+    };
+  });
 
   return (
     <div
       className={`${
         isOpen ? "right-0" : "-right-full"
-      } "w-full bg-white fixed top-0 h-full shadow-2xl md:w-[35vw] lg:w-[40vw] xl:max-w-[30vw] transition-all duration-300 z-20 px-4 lg:px-9"`}
+      } sidebar w-full bg-white fixed top-0 h-full shadow-2xl md:w-[35vw] lg:w-[40vw] xl:max-w-[30vw] transition-all duration-300 z-20 px-4 lg:px-9"`}
     >
       <div className='flex items-center justify-between py-6 border-b'>
         <div className='uppercase text-sm font-semibold'>
@@ -26,7 +42,10 @@ const Sidebar = () => {
           className='cursor-poniter w-8 h-8 flex justify-center items-center'
         >
           {/* <IoMdArrowForward className='text-2xl' /> */}
-          <ArrowRight className='text-2xl' />
+          <ArrowRight
+            className='text-2xl cursor-pointer'
+            onClick={handleClose}
+          />
         </div>
       </div>
       <div className='flex flex-col gap-y-2 h-[360px] md:h-[480px] lg:h-[420px] overflow-y-auto overflow-x-hidden border-b'>

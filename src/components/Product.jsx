@@ -4,13 +4,15 @@ import { Link } from "react-router-dom";
 // import { Plus, BsEyeFill } from "react-icons/bs";
 import { Plus, Eye } from "lucide-react";
 
-import { CartContext } from "../contexts/CartContext";
+import { useCart } from "../contexts/CartContext";
 
 const Product = ({ product }) => {
-  const { addToCart } = useContext(CartContext);
+  const { cart, dispatch } = useCart();
 
   // destructure product
   const { id, image, category, title, price } = product;
+
+  const disabled = cart.some((product) => product.id === id);
 
   return (
     <div>
@@ -27,8 +29,15 @@ const Product = ({ product }) => {
         </div>
         {/* buttons */}
         <div className='border absolute top-6 -right-11 group-hover:right-5 p-2 flex flex-col justify-center items-center gap-y-2 opacity-0 group-hover:opacity-100 transition-all duration-300'>
-          <button onClick={() => addToCart(product, id)}>
-            <div className='flex justify-center items-center text-white w-12 h-12 bg-teal-500'>
+          <button
+            disabled={disabled}
+            onClick={() => dispatch({ type: "ADD_TO_CART", payload: product })}
+          >
+            <div
+              className={`flex justify-center items-center text-white w-12 h-12 ${
+                disabled ? "bg-gray-200" : "bg-teal-500"
+              }`}
+            >
               <Plus className='text-3xl' />
             </div>
           </button>

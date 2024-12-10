@@ -1,30 +1,34 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Trash2 } from "lucide-react";
-import { useEffect } from "react";
+import { useCart } from "../contexts/CartContext";
+import CartItem from "./CartItem";
 
 // import CartItem from "../components/CartItem";
 // import { SidebarContext } from "../contexts/SidebarContext";
 // import { CartContext } from "../contexts/CartContext";
 
 const Sidebar = ({ isOpen, handleClose }) => {
+  const { cart, totalCount, totalPrice } = useCart();
   // const { isOpen, handleClose } = useContext(SidebarContext);
   // const { cart, clearCart, itemAmount, total } = useContext(CartContext);
   // let isOpen = true
 
-  useEffect(() => {
-    function watchClick(e) {
-      if (isOpen && !e.target.closest(".sidebar")) {
-        // handleClose();
-        console.log("CLOSE");
-      }
-    }
+  // useEffect(() => {
+  //   function watchClick(e) {
+  //     if (isOpen && !e.target.closest(".sidebar")) {
+  //       // handleClose();
+  //       console.log("CLOSE");
+  //     }
+  //   }
 
-    window.addEventListener("click", watchClick);
+  //   if (isOpen) {
+  //     window.addEventListener("click", watchClick);
+  //   }
 
-    return () => {
-      window.removeEventListener("click", watchClick);
-    };
-  });
+  //   return () => {
+  //     window.removeEventListener("click", watchClick);
+  //   };
+  // });
 
   return (
     <div
@@ -35,7 +39,7 @@ const Sidebar = ({ isOpen, handleClose }) => {
       <div className='flex items-center justify-between py-6 border-b'>
         <div className='uppercase text-sm font-semibold'>
           {/* Cart ({itemAmount}) */}
-          Cart (3)
+          Cart ({totalCount})
         </div>
         <div
           // onClick={handleClose}
@@ -49,18 +53,16 @@ const Sidebar = ({ isOpen, handleClose }) => {
         </div>
       </div>
       <div className='flex flex-col gap-y-2 h-[360px] md:h-[480px] lg:h-[420px] overflow-y-auto overflow-x-hidden border-b'>
-        {[].map((item, index) => {
-          // return <CartItem item={item} key={item.id} />;
-          return <div key={index}>{"item"}</div>;
+        {cart.map((item) => {
+          return <CartItem item={item} key={item.id} />;
+          // return <div key={index}>{"item"}</div>;
         })}
       </div>
       <div className='flex flex-col gap-y-3  mt-4'>
         <div className='flex w-full justify-between items-center'>
           {/* total */}
           <div className='font-semibold'>
-            <span className='mr-2'>Subtotal:</span> ${" "}
-            {/* {parseFloat(total).toFixed(2)} */}
-            12.33
+            <span className='mr-2'>Subtotal:</span> $ {totalPrice}
           </div>
           {/* clear cart icon */}
           <div
